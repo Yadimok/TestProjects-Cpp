@@ -36,7 +36,7 @@ public:
 	void display()
 	{
 		Node *tmp = root_;
-		while (tmp) 
+		while (tmp != nullptr) 
 		{
 			std::cout << tmp->value_ << ", ";
 			tmp = tmp->next_;
