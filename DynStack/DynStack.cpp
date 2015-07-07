@@ -5,7 +5,7 @@ class DynStack
 {
 	struct Node
 	{
-		T 		value_;
+		T 	value_;
 		Node 	*next_;
 	};
 
