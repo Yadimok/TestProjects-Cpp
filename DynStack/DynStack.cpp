@@ -10,11 +10,13 @@ class DynStack
 	};
 
 	Node 	*root_;
+	size_t 	size_;
 
 public:
 	DynStack()
 	{
 		root_ = nullptr;
+		size_ = 0;
 	}
 
 	~DynStack()
@@ -50,6 +52,7 @@ public:
 		nNode->value_ = value;
 		nNode->next_ = root_;
 		root_ = nNode;
+		size_++;
 	}
 
 	T pop()
@@ -62,9 +65,16 @@ public:
 			tmp = root_->next_;
 			delete root_;
 			root_ = tmp;
+			--size_;
 		}
 		return value;
 	}
+
+	size_t getSize() const
+	{
+		return size_;
+	}
+
 };
 
 int main()
@@ -72,5 +82,12 @@ int main()
 	DynStack<int> ds;
 	for (int i=0; i<5; i++)
 		ds.push(i *10);
+	ds.display();
+	std::cout << ds.getSize() << std::endl;
+
+	int value = ds.pop();
+	std::cout << value << std::endl;
+	std::cout << ds.pop() << std::endl;
+	std::cout << ds.getSize() << std::endl;
 	ds.display();
 }
