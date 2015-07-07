@@ -28,6 +28,7 @@ public:
 			delete root_;
 			root_ = tmp;
 		}
+		size_ = 0;
 	}
 
 	bool isEmpty() const
