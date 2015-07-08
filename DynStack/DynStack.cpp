@@ -6,16 +6,12 @@ class DynStack
 	template <typename U>
 	struct Node
 	{
-<<<<<<< HEAD
 		Node(U value)
 		{
 			data_ = value;
 			next_ = nullptr;
 		}
-		U 		data_;
-=======
-		T 	value_;
->>>>>>> e06492982b8c5c7c5288a318b6955e2ac05d72e9
+		U 	data_;
 		Node 	*next_;
 	};
 
@@ -30,7 +26,6 @@ public:
 	void display();
 	void push(T value);
 	T pop();
-
 	size_t getSize() const;
 };
 
