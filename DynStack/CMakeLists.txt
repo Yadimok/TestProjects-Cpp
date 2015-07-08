@@ -6,4 +6,4 @@ add_definitions(
 	-std=c++11
 	)
 
-add_executable(test DynStack.cpp)
+add_executable(stack DynStack.cpp)

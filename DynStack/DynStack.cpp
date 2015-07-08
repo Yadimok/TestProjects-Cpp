@@ -40,7 +40,7 @@ template <typename T>
 DynStack<T>::~DynStack()
 {
 	Node<T> *tmp;
-	while (root_) 
+	while (!isEmpty()) 
 	{
 		tmp = root_->next_;
 		delete root_;
