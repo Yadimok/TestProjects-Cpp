@@ -125,13 +125,24 @@ void Queue<T>::display()
 int main()
 {
   	Queue<int> q;
-  	q.push(1);
-  	q.push(43);
-  	q.push(67);
+
+  	for (int i=0; i<10; ++i)
+  		q.push(i *2);
 
   	q.display();
+
+  	std::cout << q.getSize() << std::endl;
+  	q.pop();
+	q.pop();
+  	q.pop();
+  	q.pop();
+  	
+  	std::cout << q.peek() << std::endl;
+  	q.display();  	
+  	std::cout << q.getSize() << std::endl;
 
   	while (!q.isEmpty())
   		q.pop();
   	q.display();
+
 }
