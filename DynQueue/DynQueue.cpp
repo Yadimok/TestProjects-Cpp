@@ -4,21 +4,21 @@ template <typename T>
 class Queue
 {
   template <typename U>
-  struct QueNode
+  struct Node
   {
-    QueNode(U value)
+    Node(U value)
     {
       data_ = value;
       root_ = nullptr;
     }
 
-    T          data_;
-    QueNode<U> *root_;
+    U 		 data_;
+    Node<U> *root_;
   };
 
 
-  QueNode<T> *front_;
-  QueNode<T> *end_;
+  Node<T> *front_;
+  Node<T> *rear_;
 
 public:
   Queue();
@@ -59,7 +59,7 @@ template <typename T>
 T Queue<T>::pop()
 {
   T value = front_->data_;
-  QueNode<T> *tmp = front_;
+  Node<T> *tmp = front_;
   front_ = front_->root_;
   if (front_ == nullptr)
     end_ = nullptr;
@@ -70,7 +70,7 @@ T Queue<T>::pop()
 template <typename T>
 void Queue<T>::push(T value)
 {
-  QueNode<T> *nNode = new QueNode<T>(value);
+  Node<T> *nNode = new Node<T>(value);
   if (isEmpty())
     front_ = nNode;
   else

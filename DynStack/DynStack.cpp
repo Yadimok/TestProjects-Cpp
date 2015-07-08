@@ -1,82 +1,104 @@
 #include <iostream>
 
-template <class T>
+template <typename T>
 class DynStack
 {
+	template <typename U>
 	struct Node
 	{
-		T 		value_;
+		Node(U value)
+		{
+			data_ = value;
+			next_ = nullptr;
+		}
+		U 		data_;
 		Node 	*next_;
 	};
 
-	Node 	*root_;
+	Node<T> 	*root_;
 	size_t 	size_;
 
 public:
-	DynStack()
-	{
-		root_ = nullptr;
-		size_ = 0;
-	}
+	DynStack();
+	~DynStack();
 
-	~DynStack()
-	{
-		Node *tmp;
-		while (root_) 
-		{
-			tmp = root_->next_;
-			delete root_;
-			root_ = tmp;
-		}
-		size_ = 0;
-	}
+	bool isEmpty() const;
+	void display();
+	void push(T value);
+	T pop();
 
-	bool isEmpty() const
-	{
-		return (root_ == nullptr) ? true : false;
-	}
-
-	void display()
-	{
-		Node *tmp = root_;
-		while (tmp != nullptr) 
-		{
-			std::cout << tmp->value_ << ", ";
-			tmp = tmp->next_;
-		}
-		std::cout << std::endl;
-	}
-
-	void push(T value)
-	{
-		Node *nNode = new Node;
-		nNode->value_ = value;
-		nNode->next_ = root_;
-		root_ = nNode;
-		size_++;
-	}
-
-	T pop()
-	{
-		T value = T();
-		Node *tmp;
-		if (root_ != nullptr)
-		{
-			value = root_->value_;
-			tmp = root_->next_;
-			delete root_;
-			root_ = tmp;
-			--size_;
-		}
-		return value;
-	}
-
-	size_t getSize() const
-	{
-		return size_;
-	}
-
+	size_t getSize() const;
 };
+
+template <typename T>
+DynStack<T>::DynStack()
+{
+	root_ = nullptr;
+	size_ = 0;
+}
+
+template <typename T>
+DynStack<T>::~DynStack()
+{
+	Node<T> *tmp;
+	while (root_) 
+	{
+		tmp = root_->next_;
+		delete root_;
+		root_ = tmp;
+	}
+	size_ = 0;
+}
+
+template <typename T>
+size_t DynStack<T>::getSize() const
+{
+	return size_;
+}
+
+template <typename T>
+bool DynStack<T>::isEmpty() const
+{
+	return (root_ == nullptr) ? true : false;
+}
+
+template <typename T>
+void DynStack<T>::display()
+{
+	Node<T> *tmp = root_;
+	while (tmp != nullptr) 
+	{
+		std::cout << tmp->data_ << ", ";
+		tmp = tmp->next_;
+	}
+	std::cout << std::endl;
+}
+
+template <typename T>
+void DynStack<T>::push(T value)
+{
+	Node<T> *nNode = new Node<T>(value);
+	nNode->next_ = root_;
+	root_ = nNode;
+	size_++;
+}
+
+template <typename T>
+T DynStack<T>::pop()
+{
+	T value = T();
+	Node<T> *tmp;
+	if (root_ != nullptr)
+	{
+		value = root_->data_;
+		tmp = root_->next_;
+		delete root_;
+		root_ = tmp;
+		--size_;
+	}
+	return value;
+}
+
 
 int main()
 {
