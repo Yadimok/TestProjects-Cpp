@@ -19,6 +19,7 @@ class Queue
 
   	Node<T> *front_;
   	Node<T> *rear_;
+  	size_t	size_;
 
 public:
   	Queue();
@@ -26,14 +27,18 @@ public:
 
   	bool isEmpty() const;
   	void push(T value);
-  	T pop();
+  	void pop();
   	T peek() const;
+  	size_t getSize() const;
+
+  	void display();
 };
 
 template <typename T>
 Queue<T>::Queue()
 {
-  	front_ = end_ = nullptr;
+  	front_ = rear_ = nullptr;
+  	size_ = 0;
 }
 
 template <typename T>
@@ -45,8 +50,14 @@ bool Queue<T>::isEmpty() const
 template <typename T>
 Queue<T>::~Queue()
 {
+	Node<T> *tmp;
   	while (!isEmpty())
-    	T tmp = pop();
+  	{
+    	tmp = front_->root_;
+    	delete front_;
+    	front_ = tmp;
+  	}
+  	size_ = 0;
 }
 
 template <typename T>
@@ -56,26 +67,58 @@ T Queue<T>::peek() const
 }
 
 template <typename T>
-T Queue<T>::pop()
+void Queue<T>::pop()
 {
-  	T value = front_->data_;
-  	Node<T> *tmp = front_;
-  	front_ = front_->root_;
-  	if (front_ == nullptr)
-    	end_ = nullptr;
-  	delete tmp;
-  	return value;
+  	Node<T> *tmp;
+  	if (!isEmpty())
+  	{
+  		tmp = front_->root_;
+  		delete front_;
+  		front_ = tmp;
+
+  		if (isEmpty())
+  			rear_ = nullptr;
+  		--size_;
+  	}
 }
 
 template <typename T>
 void Queue<T>::push(T value)
 {
   	Node<T> *nNode = new Node<T>(value);
-  	if (isEmpty())
-    	front_ = nNode;
+  	nNode->root_ = nullptr;
+
+  	if (rear_ == nullptr)
+  	{
+  		front_ = nNode;
+  		rear_ = nNode;
+  	}
   	else
-    	end_->root_ = nNode;
-  	end_ = nNode;
+  	{
+  		while (rear_->root_)
+  			rear_ = rear_->root_;
+  		rear_->root_ = nNode;
+  	}
+
+  	size_++;
+}
+
+template <typename T>
+size_t Queue<T>::getSize() const
+{
+	return size_;
+}
+
+template <typename T>
+void Queue<T>::display()
+{
+	Node<T> *tmp = front_;
+	while (tmp)
+	{
+		std::cout << tmp->data_ << ", ";
+		tmp = tmp->root_;
+	}
+	std::cout << std::endl;
 }
 
 
@@ -86,7 +129,9 @@ int main()
   	q.push(43);
   	q.push(67);
 
-  	while (!q.isEmpty())
-    	std::cout << q.pop() << std::endl;
+  	q.display();
 
+  	while (!q.isEmpty())
+  		q.pop();
+  	q.display();
 }
