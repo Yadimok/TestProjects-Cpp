@@ -20,6 +20,8 @@ class LinkedList
 	size_t	size_;
 
 	void deleteList(Node<T> **node);
+	void addBegin(Node<T> **node, T value);
+
 
 public:
 	LinkedList();
@@ -32,6 +34,8 @@ public:
 	void display();
 	size_t count(T value);
 	T getNth(size_t index);
+
+	void addBegin(T value);
 
 };
 
@@ -63,6 +67,21 @@ void LinkedList<T>::deleteList(Node<T> **node)
 	}
 
 	*node = nullptr;
+}
+
+template <typename T>
+void LinkedList<T>::addBegin(T value)
+{
+	addBegin(&root_, value);
+}
+
+template <typename T>
+void LinkedList<T>::addBegin(Node<T> **node, T value)
+{
+	Node<T> *nNode = new Node<T>(value);
+	nNode->root_ = *node;
+	*node = nNode;
+
 }
 
 template <typename T>
