@@ -19,6 +19,8 @@ class LinkedList
 	Node<T>	*root_;
 	size_t	size_;
 
+	void deleteList(Node<T> **node);
+
 public:
 	LinkedList();
 	~LinkedList();
@@ -43,7 +45,24 @@ LinkedList<T>::LinkedList()
 template <typename T>
 LinkedList<T>::~LinkedList()
 {
+	deleteList(&root_);
 	size_ = 0;
+}
+
+template <typename T>
+void LinkedList<T>::deleteList(Node<T> **node)
+{
+	Node<T> *cur = node;
+	Node<T> *next = nullptr;
+
+	while (cur != nullptr)
+	{
+		next = cur->next_;
+		delete cur;
+		cur = next;
+	}
+
+	*node = nullptr;
 }
 
 template <typename T>
