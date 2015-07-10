@@ -56,7 +56,7 @@ LinkedList<T>::~LinkedList()
 template <typename T>
 void LinkedList<T>::deleteList(Node<T> **node)
 {
-	Node<T> *cur = node;
+	Node<T> *cur = *node;
 	Node<T> *next = nullptr;
 
 	while (cur != nullptr)
@@ -79,7 +79,7 @@ template <typename T>
 void LinkedList<T>::addBegin(Node<T> **node, T value)
 {
 	Node<T> *nNode = new Node<T>(value);
-	nNode->root_ = *node;
+	nNode->next_ = *node;
 	*node = nNode;
 
 }
@@ -157,5 +157,14 @@ T LinkedList<T>::getNth(size_t index)
 
 int main()
 {
+	LinkedList<int> ll;
+
+	
+	for (int i=0; i<10; ++i)
+		ll.addBegin(3*i);
+
+	ll.display();
+
+
 
 }
