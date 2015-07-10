@@ -21,6 +21,7 @@ class LinkedList
 
 	void deleteList(Node<T> **node);
 	void addBegin(Node<T> **node, T value);
+	void addEnd(Node<T> **node, T value);
 
 
 public:
@@ -36,6 +37,7 @@ public:
 	T getNth(size_t index);
 
 	void addBegin(T value);
+	void addEnd(T value);
 
 };
 
@@ -82,6 +84,31 @@ void LinkedList<T>::addBegin(Node<T> **node, T value)
 	nNode->next_ = *node;
 	*node = nNode;
 
+	size_++;
+}
+
+template <typename T>
+void LinkedList<T>::addEnd(T value)
+{
+	addEnd(&root_, value);
+}
+
+template <typename T>
+void LinkedList<T>::addEnd(Node<T> **node, T value)
+{
+	Node<T> *cur = *node;
+	Node<T> *nNode = new Node<T>(value);
+
+	if (cur == nullptr)
+		*node = nNode;
+	else
+	{
+		while (cur->next_ != nullptr)
+			cur = cur->next_;
+		cur->next_ = nNode;
+	}
+
+	size_++;
 }
 
 template <typename T>
@@ -164,7 +191,11 @@ int main()
 		ll.addBegin(3*i);
 
 	ll.display();
+	std::cout << ll.getSize() << std::endl;
 
+	for (int i=0; i<5; ++i)
+		ll.addEnd(2*i);
+	std::cout << ll.getSize() << std::endl;
 
-
+	ll.display();
 }
