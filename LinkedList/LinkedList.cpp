@@ -22,6 +22,10 @@ class LinkedList
 	void deleteList(Node<T> **node);
 	void addBegin(Node<T> **node, T value);
 	void addEnd(Node<T> **node, T value);
+	void reverse(Node<T> **node);
+	void insertionSort(Node<T> **node);
+	void insertionSort(Node<T> **node, Node<T> *nNode);
+	void deleteNode(Node<T> **node, T value);
 
 
 public:
@@ -38,6 +42,9 @@ public:
 
 	void addBegin(T value);
 	void addEnd(T value);
+	void reverse();
+	void sort();
+	void deleteNode(T value);
 
 };
 
@@ -112,6 +119,30 @@ void LinkedList<T>::addEnd(Node<T> **node, T value)
 }
 
 template <typename T>
+void LinkedList<T>::reverse()
+{
+	reverse(&root_);
+}
+
+template <typename T>
+void LinkedList<T>::reverse(Node<T> **node)
+{
+	Node<T> *prev 	= nullptr;
+	Node<T> *cur 	= *node;
+	Node<T> *next 	= nullptr;
+
+	while (cur != nullptr)
+	{
+		next = cur->next_;
+		cur->next_ = prev;
+		prev = cur;
+		cur = next;
+	}
+
+	*node = prev;
+}
+
+template <typename T>
 bool LinkedList<T>::isEmpty() const
 {
 	return (root_ == nullptr) ? true : false;
@@ -180,6 +211,50 @@ T LinkedList<T>::getNth(size_t index)
 	}
 }
 
+template <typename T>
+void LinkedList<T>::sort()
+{
+	insertionSort(&root_);
+}
+
+template <typename T>
+void LinkedList<T>::insertionSort(Node<T> **node)
+{
+	Node<T> *sorted = nullptr;
+	Node<T> *cur  = *node;
+
+	while (cur != nullptr)
+	{
+		Node<T> *next = cur->next_;
+		insertionSort(&sorted, cur);
+		cur = next;
+	}
+	*node = sorted;
+}
+
+template <typename T>
+void LinkedList<T>::insertionSort(Node<T> **node, Node<T> *nNode)
+{
+	Node<T> *cur = nullptr;
+
+	if (*node == nullptr || (*node)->value_ >= nNode->value_)
+	{
+		nNode->next_ = *node;
+		*node = nNode;
+	}
+	else
+	{
+		cur = *node;
+		while (cur->next_ != nullptr && cur->next_->value_ < nNode->value_)
+		{
+			cur = cur->next_;
+		}
+
+		nNode->next_ = cur->next_;
+		cur->next_ = nNode;
+	}
+}
+
 
 
 int main()
@@ -196,6 +271,14 @@ int main()
 	for (int i=0; i<5; ++i)
 		ll.addEnd(2*i);
 	std::cout << ll.getSize() << std::endl;
+
+	ll.display();
+
+	ll.reverse();
+
+	ll.display();
+
+	ll.sort();
 
 	ll.display();
 }
