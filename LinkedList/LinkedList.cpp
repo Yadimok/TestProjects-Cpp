@@ -25,7 +25,7 @@ class LinkedList
 	void insertionSort(Node<T> **node);
 	void insertionSort(Node<T> **node, Node<T> *nNode);
 	void deleteNode(Node<T> **node, T &value);
-
+	void insertNth(Node<T> **node, int pos, T &value);
 
 public:
 	LinkedList();
@@ -44,6 +44,7 @@ public:
 	void reverse();
 	void sort();
 	void deleteNode(T value);
+	void insertNth(int pos, T value);
 
 };
 
@@ -289,6 +290,29 @@ void LinkedList<T>::deleteNode(Node<T> **node, T &value)
 	delete cur;
 }
 
+template <typename T>
+void LinkedList<T>::insertNth(int pos, T value)
+{
+	insertNth(&root_, pos, value);
+}
+
+template <typename T>
+void LinkedList<T>::insertNth(Node<T> **node, int pos, T &value)
+{
+	if (0 == pos)
+		addBegin(node, value);
+	else
+	{
+		Node<T> *cur = *node;
+		int i;
+		for (i=0; i<pos-1; ++i)
+		{
+			cur = cur->next_;
+		}
+
+		addBegin(&(cur->next_), value);
+	}
+}
 
 
 int main()
@@ -328,16 +352,13 @@ int main()
 	ll.deleteNode(18);
 	ll.deleteNode(15);
 	ll.deleteNode(12);
-	ll.deleteNode(9);
-	ll.deleteNode(8);
-	ll.deleteNode(6);
-	ll.deleteNode(4);
-	ll.deleteNode(3);
-	ll.deleteNode(2);
-	ll.deleteNode(0);
 
 	ll.display();
 
 	std::cout << ll.getSize() << std::endl;
 
+	ll.insertNth(0, 44);
+	ll.insertNth(4, 55);
+	std::cout << ll.getSize() << std::endl;
+	ll.display();
 }
