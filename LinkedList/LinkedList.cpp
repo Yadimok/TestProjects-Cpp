@@ -17,15 +17,14 @@ class LinkedList
 	};
 
 	Node<T>	*root_;
-	size_t	size_;
 
 	void deleteList(Node<T> **node);
-	void addBegin(Node<T> **node, T value);
-	void addEnd(Node<T> **node, T value);
+	void addBegin(Node<T> **node, T &value);
+	void addEnd(Node<T> **node, T &value);
 	void reverse(Node<T> **node);
 	void insertionSort(Node<T> **node);
 	void insertionSort(Node<T> **node, Node<T> *nNode);
-	void deleteNode(Node<T> **node, T value);
+	void deleteNode(Node<T> **node, T &value);
 
 
 public:
@@ -52,14 +51,12 @@ template <typename T>
 LinkedList<T>::LinkedList()
 {
 	root_ = nullptr;
-	size_ = 0;
 }
 
 template <typename T>
 LinkedList<T>::~LinkedList()
 {
 	deleteList(&root_);
-	size_ = 0;
 }
 
 template <typename T>
@@ -85,13 +82,11 @@ void LinkedList<T>::addBegin(T value)
 }
 
 template <typename T>
-void LinkedList<T>::addBegin(Node<T> **node, T value)
+void LinkedList<T>::addBegin(Node<T> **node, T &value)
 {
 	Node<T> *nNode = new Node<T>(value);
 	nNode->next_ = *node;
 	*node = nNode;
-
-	size_++;
 }
 
 template <typename T>
@@ -101,7 +96,7 @@ void LinkedList<T>::addEnd(T value)
 }
 
 template <typename T>
-void LinkedList<T>::addEnd(Node<T> **node, T value)
+void LinkedList<T>::addEnd(Node<T> **node, T &value)
 {
 	Node<T> *cur = *node;
 	Node<T> *nNode = new Node<T>(value);
@@ -114,8 +109,6 @@ void LinkedList<T>::addEnd(Node<T> **node, T value)
 			cur = cur->next_;
 		cur->next_ = nNode;
 	}
-
-	size_++;
 }
 
 template <typename T>
@@ -151,7 +144,16 @@ bool LinkedList<T>::isEmpty() const
 template <typename T>
 size_t LinkedList<T>::getSize() const
 {
-	return size_;
+	Node<T> *cur = root_;
+	size_t size = 0;
+
+	while (cur != nullptr)
+	{
+		size++;
+		cur = cur->next_;
+	}
+
+	return size;
 }
 
 template <typename T>
@@ -255,6 +257,38 @@ void LinkedList<T>::insertionSort(Node<T> **node, Node<T> *nNode)
 	}
 }
 
+template <typename T>
+void LinkedList<T>::deleteNode(T value)
+{
+	deleteNode(&root_, value);
+}
+
+template <typename T>
+void LinkedList<T>::deleteNode(Node<T> **node, T &value)
+{
+	Node<T> *cur = *node;
+	Node<T> *prev = nullptr;
+
+	if (cur != nullptr && cur->value_ == value)
+	{
+		*node = cur->next_;
+		delete cur;
+		return;
+	}
+
+	while (cur != nullptr && cur->value_ != value)
+	{
+		prev = cur;
+		cur = cur->next_;
+	}
+
+	if (cur == nullptr)
+		return;
+
+	prev->next_ = cur->next_;
+	delete cur;
+}
+
 
 
 int main()
@@ -281,4 +315,29 @@ int main()
 	ll.sort();
 
 	ll.display();
+
+	ll.deleteNode(5);
+
+	ll.display();
+
+	ll.deleteNode(0);
+	ll.deleteNode(6);
+	ll.deleteNode(27);
+	ll.deleteNode(24);
+	ll.deleteNode(21);
+	ll.deleteNode(18);
+	ll.deleteNode(15);
+	ll.deleteNode(12);
+	ll.deleteNode(9);
+	ll.deleteNode(8);
+	ll.deleteNode(6);
+	ll.deleteNode(4);
+	ll.deleteNode(3);
+	ll.deleteNode(2);
+	ll.deleteNode(0);
+
+	ll.display();
+
+	std::cout << ll.getSize() << std::endl;
+
 }
