@@ -12,7 +12,7 @@ class HashMap
 	};
 
 	int hash(T key);
-	Node<K, V> **table;
+	Node<T, U> **table;
 
 	enum {
 		SIZE_TABLE = 11
@@ -31,12 +31,28 @@ public:
 template <typename T, typename U>
 HashMap<T, U>::HashMap()
 {
+	table = new Node<T, U>*[SIZE_TABLE]();
 
 }
 
 template <typename T, typename U>
 HashMap<T, U>::~HashMap()
 {
+	for (int i=0; i<SIZE_TABLE; ++i)
+	{
+		Node<T, U> *cur = table[i];
+		Node<T, U> tmp = nullptr;
+
+		while (cur != nullptr)
+		{
+			tmp = cur;
+			delete tmp;
+			cur = cur->next_;
+		}
+		table[i] = nullptr;
+	}
+
+	delete [] table;
 
 }
 
