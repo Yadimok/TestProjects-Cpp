@@ -83,9 +83,9 @@ void HashMap<T, U>::insert(const T &key, const T &value)
 }
 
 template <typename T, typename U>
-void HashMap<T, U>::remove(const T &key, const T &value)
+void HashMap<T, U>::remove(const T &key)
 {
-	
+
 }
 
 int main()
