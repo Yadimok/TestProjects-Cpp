@@ -62,6 +62,32 @@ int HashMap<T, U>::hash(T key)
 	return key % SIZE_TABLE;
 }
 
+template <typename T, typename U>
+bool HashMap<T, U>::search(const T& key, const U &value)
+{
+	Node<T, U> *cur = table[hash(key)];
+
+	while (cur != nullptr)
+	{
+		if (cur->value_ == value)
+			return true;
+		cur = cur->next_;
+	}
+	return false;
+}
+
+template <typename T, typename U>
+void HashMap<T, U>::insert(const T &key, const T &value)
+{
+
+}
+
+template <typename T, typename U>
+void HashMap<T, U>::remove(const T &key, const T &value)
+{
+	
+}
+
 int main()
 {
 
