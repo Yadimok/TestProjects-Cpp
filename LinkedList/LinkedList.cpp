@@ -6,7 +6,7 @@ class LinkedList
 	template <typename U>
 	struct Node
 	{
-		Node (U value)
+		Node (U value) : value_(value), next_(nullptr)
 		{
 			value_ = value;
 			next_ = nullptr;

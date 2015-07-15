@@ -6,10 +6,8 @@ class Queue
  	template <typename U>
   	struct Node
   	{
-    	Node(U value)
+    	Node(U value) : data_(value), root_(nullptr)
     	{
-      		data_ = value;
-      		root_ = nullptr;
     	}
 
     	U 		 data_;

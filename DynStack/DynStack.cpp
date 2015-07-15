@@ -6,11 +6,10 @@ class DynStack
 	template <typename U>
 	struct Node
 	{
-		Node(U value)
+		Node(U value) : data_(value), next_(nullptr)
 		{
-			data_ = value;
-			next_ = nullptr;
 		}
+		
 		U 	data_;
 		Node 	*next_;
 	};
