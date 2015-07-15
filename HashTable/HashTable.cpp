@@ -25,6 +25,7 @@ public:
 	bool search(const T &key, const U &value);
 	void insert(const T &key, const U &value);
 	void remove(const T &key);
+	void display();
 
 };
 
@@ -41,13 +42,12 @@ HashMap<T, U>::~HashMap()
 	for (int i=0; i<SIZE_TABLE; ++i)
 	{
 		Node<T, U> *cur = table[i];
-		Node<T, U> tmp = nullptr;
 
 		while (cur != nullptr)
 		{
-			tmp = cur;
-			delete tmp;
+			Node<T, U> tmp = cur;
 			cur = cur->next_;
+			delete tmp;
 		}
 		table[i] = nullptr;
 	}
@@ -80,12 +80,29 @@ template <typename T, typename U>
 void HashMap<T, U>::insert(const T &key, const T &value)
 {
 
+
 }
 
 template <typename T, typename U>
 void HashMap<T, U>::remove(const T &key)
 {
 
+}
+
+template <typename T, typename U>
+void HashMap<T, U>::display()
+{
+	for (int i=0; i<SIZE_TABLE; ++i)
+	{
+		Node<T, U> *cur = table[i];
+		std::cout << "[" << i << "]:->";
+		while (cur != nullptr)
+		{
+			std::cout << cur->value_ << ", ";
+			cur = cur->next_;
+		}
+		std::cout << std::endl;
+	}
 }
 
 int main()
