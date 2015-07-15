@@ -70,7 +70,8 @@ int HashMap<T, U>::hash(T key)
 template <typename T, typename U>
 bool HashMap<T, U>::search(const T& key, const U &value)
 {
-	Node<T, U> *cur = table[hash(key)];
+	int indexOfTable = hash(key);
+	Node<T, U> *cur = table[indexOfTable];
 
 	if (cur == nullptr)
 		return false;
