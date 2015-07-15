@@ -39,7 +39,6 @@ template <typename T, typename U>
 HashMap<T, U>::HashMap()
 {
 	table = new Node<T, U>*[SIZE_TABLE]();
-
 }
 
 template <typename T, typename U>
@@ -178,9 +177,9 @@ int main()
 	hm.display();
 
 	if (hm.search(3, 3.2))
-		std::cout << "YES" << std::endl;
+		std::cout << "Find" << std::endl;
 	else
-		std::cout << "NO" << std::endl;
+		std::cout << "Not find" << std::endl;
 
 
 }
