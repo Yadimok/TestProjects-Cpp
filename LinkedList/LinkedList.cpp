@@ -8,8 +8,6 @@ class LinkedList
 	{
 		Node (U value) : value_(value), next_(nullptr)
 		{
-			value_ = value;
-			next_ = nullptr;
 		}
 
 		U		value_;
