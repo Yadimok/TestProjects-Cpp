@@ -22,6 +22,8 @@ class HashMap
 		SIZE_TABLE = 11
 	};
 
+	void display(int i);
+
 public:
 	HashMap();
 	~HashMap();
@@ -30,7 +32,6 @@ public:
 	void insert(const T &key, const U &value);
 	void remove(const T &key);
 	void display();
-	void display(int i);
 
 };
 
@@ -110,8 +111,22 @@ void HashMap<T, U>::insert(const T &key, const U &value)
 template <typename T, typename U>
 void HashMap<T, U>::remove(const T &key)
 {
+	int indexOfTable = hash(key);
+	Node<T, U> *tmpNode = nullptr;
+	Node<T, U> *cur = table[indexOfTable];
 
+	if (cur == nullptr || cur->key_ != key)
+		return;
 
+	while (cur->next_ != nullptr)
+	{
+		tmpNode = cur;
+		cur = cur->next_;
+	}
+
+	if (tmpNode != nullptr)
+		tmpNode->next_ = cur->next_;
+	delete cur;
 }
 
 template <typename T, typename U>
@@ -144,8 +159,28 @@ int main()
 	for (int i=0; i<32; ++i)
 		hm.insert(i, i+0.1);
 
-	for (int i=0; i<11; ++i)
-		hm.display(i);
+	hm.display();
+
+	std::cout << std::endl;
+	hm.remove(2);
+	hm.display();
+
+		std::cout << std::endl;
+	hm.remove(2);
+	hm.display();
+
+	std::cout << std::endl;
+	hm.remove(2);
+	hm.display();
+
+	std::cout << std::endl;
+	hm.remove(2);
+	hm.display();
+
+	if (hm.search(3, 3.2))
+		std::cout << "YES" << std::endl;
+	else
+		std::cout << "NO" << std::endl;
 
 
 }
