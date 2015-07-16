@@ -20,6 +20,8 @@ class BinTree
 	TreeNode<T>		*root_;
 
 	void insert(TreeNode<T> *&node, TreeNode<T> *&nNode);
+	void deleteNode(TreeNode<T> *&node, T value);
+	void deletionNode(TreeNode<T> *&node);
 
 	void inOrder(TreeNode<T> *node);
 	void preOrder(TreeNode<T> *node);
@@ -31,6 +33,8 @@ public:
 
 	void insert(T value);
 	bool find(T value);
+	void remove(T value);
+
 
 
 	void inOrder();
@@ -140,22 +144,78 @@ bool BinTree<T>::find(T value)
 	return false;
 }
 
+template <typename T>
+void BinTree<T>::remove(T value)
+{
+	deleteNode(root_, value);
+}
+
+template <typename T>
+void BinTree<T>::deleteNode(TreeNode<T> *&node, T value)
+{
+	
+
+}
+
+// template <typename T>
+// void BinTree<T>::deletionNode(TreeNode<T> *&node)
+// {
+// 	TreeNode<T> *tmpNode = nullptr;
+
+// 	if (node == nullptr)
+// 		std::cout << "Empty node" << std::endl;
+// 	else if (node->right_ == nullptr)
+// 	{
+// 		tmpNode = node;
+// 		node = node->left_;
+// 		delete tmpNode;
+// 	}
+// 	else if (node->left_ == nullptr)
+// 	{
+// 		tmpNode = node;
+// 		node = node->right_;
+// 		delete tmpNode;
+// 	}
+// 	else
+// 	{
+// 		tmpNode = node->right_;
+// 		while (tmpNode->left_ != nullptr)
+// 			tmpNode = tmpNode->left_;
+
+// 		tmpNode->left_ = node->left_;
+// 		tmpNode = node;
+// 		node = node->right_;
+// 		delete tmpNode;
+// 	}
+// }
 
 
 int main()
 {
-	BinTree<int> bt;
+	BinTree<int> btree;
 
-	std::random_device rd;
-	std::mt19937 rdg(rd());
-	std::uniform_int_distribution<int> uni(1, 32);
+	// std::random_device rd;
+	// std::mt19937 rdg(rd());
+	// std::uniform_int_distribution<int> uni(1, 32);
 
-	for (int i=0; i<15; ++i)
-		bt.insert(uni(rdg));
+	// for (int i=0; i<15; ++i)
+	// 	bt.insert(uni(rdg));
 
-	bt.inOrder(); //display inOrder traversal
+	btree.insert(5);
+	btree.insert(8);
+	btree.insert(3);
+	btree.insert(12);
+	btree.insert(9);
+	btree.insert(15);
+
+	btree.inOrder(); //display inOrder traversal
 	std::cout << std::endl;
 
-	std::cout << (bt.find(6) ? "Find" : "Not find") << std::endl;
+	std::cout << (btree.find(6) ? "Find" : "Not find") << std::endl;
+
+	btree.remove(6);
+	btree.inOrder(); //display inOrder traversal
+	std::cout << std::endl;
+
 
 }
