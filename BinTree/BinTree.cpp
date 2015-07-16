@@ -1,4 +1,5 @@
 #include <iostream>
+#include <random>
 
 template <typename T>
 class BinTree
@@ -18,7 +19,7 @@ class BinTree
 
 	TreeNode<T>		*root_;
 
-	void insert(TreeNode<T> &*node, TreeNode<T> &*nNode);
+	void insert(TreeNode<T> *&node, TreeNode<T> *&nNode);
 
 	void inOrder(TreeNode<T> *node);
 	void preOrder(TreeNode<T> *node);
@@ -29,6 +30,7 @@ public:
 	~BinTree();
 
 	void insert(T value);
+	bool find(T value);
 
 
 	void inOrder();
@@ -111,19 +113,49 @@ void BinTree<T>::insert(T value)
 }
 
 template <typename T>
-void BinTree<T>::insert(TreeNode<T> &*node, TreeNode<T> &*nNode)
+void BinTree<T>::insert(TreeNode<T> *&node, TreeNode<T> *&nNode)
 {
-	if (root_ == nullptr)
-		root_ = nNode;
-	else if (root_->data_ > nNode->data_)
-		insert(root_->left_, nNode);
+	if (node == nullptr)
+		node = nNode;
+	else if (node->data_ > nNode->data_)
+		insert(node->left_, nNode);
 	else
-		insert(root_->right_, nNode);
+		insert(node->right_, nNode);
+}
+
+template <typename T>
+bool BinTree<T>::find(T value)
+{
+	TreeNode<T> *cur = root_;
+
+	while (cur != nullptr)
+	{
+		if (cur->data_ == value)
+			return true;
+		else if (cur->data_ > value)
+			cur = cur->left_;
+		else
+			cur = cur->right_;
+	}
+	return false;
 }
 
 
 
 int main()
 {
+	BinTree<int> bt;
+
+	std::random_device rd;
+	std::mt19937 rdg(rd());
+	std::uniform_int_distribution<int> uni(1, 32);
+
+	for (int i=0; i<15; ++i)
+		bt.insert(uni(rdg));
+
+	bt.inOrder(); //display inOrder traversal
+	std::cout << std::endl;
+
+	std::cout << (bt.find(6) ? "Find" : "Not find") << std::endl;
 
 }
