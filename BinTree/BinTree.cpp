@@ -22,7 +22,7 @@ class BinTree
 	void insert(TreeNode<T> *&node, TreeNode<T> *&nNode);
 	void deleteNode(TreeNode<T> *&node, T value);
 	void deletionNode(TreeNode<T> *&node);
-	void destroyTree(TreeNode<T> *node);
+	void destroyTree(TreeNode<T> *&node);
 	size_t size(TreeNode<T> *node);
 	size_t maxDepth(TreeNode<T> *node);
 
@@ -60,19 +60,18 @@ template <typename T>
 BinTree<T>::~BinTree()
 {
 	destroyTree(root_);
+	root_ = nullptr;
 }
 
 template <typename  T>
-void BinTree<T>::destroyTree(TreeNode<T> *node)
+void BinTree<T>::destroyTree(TreeNode<T> *&node)
 {
-	if (node != nullptr)
-	{
-		if (node->left_ != nullptr)
-			destroyTree(node->left_);
-		if (node->right_ != nullptr)
-			destroyTree(node->right_);
-		delete node;
-	}
+	if (node == nullptr)
+		return;
+
+	destroyTree(node->left_);
+	destroyTree(node->right_);
+	delete node;
 }
 
 template <typename T>
