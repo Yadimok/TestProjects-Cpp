@@ -4,3 +4,4 @@
 2. Dynamic queue - DynQueue.cpp
 3. Linked list - LinkedList.cpp
 4. Hash table - HashTable.cpp (Separate chaining with linked list)
+5. Binary Search Tree  - BinTree.cpp
