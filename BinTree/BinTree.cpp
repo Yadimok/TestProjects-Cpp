@@ -23,6 +23,8 @@ class BinTree
 	void deleteNode(TreeNode<T> *&node, T value);
 	void deletionNode(TreeNode<T> *&node);
 	void destroyTree(TreeNode<T> *node);
+	size_t size(TreeNode<T> *node);
+	size_t maxDepth(TreeNode<T> *node);
 
 	void inOrder(TreeNode<T> *node);
 	void preOrder(TreeNode<T> *node);
@@ -35,6 +37,10 @@ public:
 	void insert(T value);
 	bool find(T value);
 	void remove(T value);
+	size_t size();
+	size_t maxDepth();
+	T minValue() const;
+	T maxValue() const;
 
 
 
@@ -171,6 +177,62 @@ void BinTree<T>::deleteNode(TreeNode<T> *&node, T value)
 
 }
 
+template <typename T>
+size_t BinTree<T>::size()
+{
+	return (size(root_));
+}
+
+template <typename T>
+size_t BinTree<T>::size(TreeNode<T> *node)
+{
+	if (node == nullptr)
+		return 0;
+	else
+		return (size(node->left_) + 1 + size(node->right_));
+}
+
+template <typename T>
+T BinTree<T>::minValue() const
+{
+	TreeNode<T> *tmpNode = root_;
+	while (tmpNode->left_ != nullptr)
+		tmpNode = tmpNode->left_;
+	return (tmpNode->data_);
+}
+
+template <typename T>
+T BinTree<T>::maxValue() const
+{
+	TreeNode<T> *tmpNode = root_;
+	while (tmpNode->right_ != nullptr)
+		tmpNode = tmpNode->right_;
+	return (tmpNode->data_);
+}
+
+template <typename T>
+size_t BinTree<T>::maxDepth()
+{
+	return maxDepth(root_);
+}
+
+template <typename T>
+size_t BinTree<T>::maxDepth(TreeNode<T> *node)
+{
+	if (node == nullptr)
+		return 0;
+	else
+	{
+		int leftDepth = maxDepth(node->left_);
+		int rightDepth = maxDepth(node->right_);
+
+		if (leftDepth > rightDepth)
+			return(leftDepth + 1);
+		else
+			return(rightDepth + 1);
+	}
+}
+
 // template <typename T>
 // void BinTree<T>::deletionNode(TreeNode<T> *&node)
 // {
@@ -227,9 +289,12 @@ int main()
 
 	std::cout << (btree.find(6) ? "Find" : "Not find") << std::endl;
 
-	btree.remove(6);
-	btree.inOrder(); //display inOrder traversal
-	std::cout << std::endl;
+	// btree.remove(6);
+	// btree.inOrder(); //display inOrder traversal
+	// std::cout << std::endl;
+
+	std::cout << btree.size() << std::endl;
+	std::cout << btree.maxDepth() << std::endl;
 
 
 }
