@@ -20,8 +20,8 @@ class BinTree
 	TreeNode<T>		*root_;
 
 	void insert(TreeNode<T> *&node, TreeNode<T> *&nNode);
-	void deleteNode(TreeNode<T> *&node, T value);
-	void deletionNode(TreeNode<T> *&node);
+	void deleteNode(TreeNode<T> **node, T value);
+	TreeNode<T> **getSuccessor(TreeNode<T> **node);
 	void destroyTree(TreeNode<T> *&node);
 	size_t size(TreeNode<T> *node);
 	size_t maxDepth(TreeNode<T> *node);
@@ -45,8 +45,6 @@ public:
 	T minValue() const;
 	T maxValue() const;
 	void printPaths();
-
-
 
 	void inOrder();
 	void preOrder();
@@ -172,14 +170,41 @@ bool BinTree<T>::find(T value)
 template <typename T>
 void BinTree<T>::remove(T value)
 {
-	deleteNode(root_, value);
+	deleteNode(&root_, value);
 }
 
 template <typename T>
-void BinTree<T>::deleteNode(TreeNode<T> *&node, T value)
+void BinTree<T>::deleteNode(TreeNode<T> **node, T value)
 {
-	
+	if (*node == nullptr)
+		return;
 
+	if (value == (*node)->data_)
+	{
+		if ((*node)->right_ == nullptr)
+			*node = (*node)->left_;
+		else if ((*node)->left_ == nullptr)
+			*node = (*node)->right_;
+		else
+		{
+			TreeNode<T> **successor = getSuccessor(&(*node)->left_);
+			(*node)->data_ = (*successor)->data_;
+			deleteNode(successor, (*successor)->data_);
+		}
+	}
+	else if (value < (*node)->data_)
+		deleteNode(&(*node)->left_, value);
+	else
+		deleteNode(&(*node)->right_, value);
+}
+
+template <typename T>
+BinTree<T>::TreeNode<T> **BinTree<T>::getSuccessor(TreeNode<T> **node)
+{
+	TreeNode<T> **tmpNode = node;
+	while ((*tmpNode)->right_ != nullptr)
+		tmpNode = &(*tmpNode)->right_;
+	return tmpNode;
 }
 
 template <typename T>
@@ -308,24 +333,22 @@ int main()
 	for (int i=0; i<10; ++i)
 		btree.insert(uni(rdg));
 
-	// btree.insert(35);
-	// btree.insert(10);
-	// btree.insert(20);
-	// btree.insert(40);
-	// btree.insert(51);
-
 	btree.inOrder(); //display inOrder traversal
 	std::cout << std::endl;
 
-	std::cout << (btree.find(6) ? "Find" : "Not find") << std::endl;
+	std::cout << "Count of nodes :-> " << btree.size() << std::endl;
+	std::cout << "Max depth :-> " << btree.maxDepth() << std::endl;
 
-	std::cout << btree.size() << std::endl;
-	std::cout << btree.maxDepth() << std::endl;
-
+	std::cout << "Breadth first search :-> ";
 	btree.bfs();
 	std::cout << std::endl;
 
 	btree.printPaths();
+	std::cout << std::endl;
+
+	if (btree.find(5))
+		btree.remove(5);
+	btree.inOrder();
 	std::cout << std::endl;
 
 }
