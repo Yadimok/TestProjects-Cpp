@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <queue>
 
 template <typename T>
 class BinTree
@@ -47,6 +48,8 @@ public:
 	void inOrder();
 	void preOrder();
 	void postOrder();
+
+	void bfs();		//BFS - breadth first search
 	
 };
 
@@ -232,6 +235,28 @@ size_t BinTree<T>::maxDepth(TreeNode<T> *node)
 	}
 }
 
+template <typename T>
+void BinTree<T>::bfs()
+{
+	std::queue<TreeNode<T> *> q;
+	TreeNode<T> *cur = root_;
+	q.push(cur);
+
+	while (!q.empty())
+	{
+		TreeNode<T> *tmp = q.front();
+		std::cout << tmp->data_ << ", ";
+
+		if (tmp->left_ != nullptr)
+			q.push(tmp->left_);
+
+		if (tmp->right_ != nullptr)
+			q.push(tmp->right_);
+
+		q.pop();
+	}
+}
+
 // template <typename T>
 // void BinTree<T>::deletionNode(TreeNode<T> *&node)
 // {
@@ -271,17 +296,16 @@ int main()
 
 	// std::random_device rd;
 	// std::mt19937 rdg(rd());
-	// std::uniform_int_distribution<int> uni(1, 32);
+	// std::uniform_int_distribution<int> uni(1, 16);
 
-	// for (int i=0; i<15; ++i)
-	// 	bt.insert(uni(rdg));
+	// for (int i=0; i<10; ++i)
+	// 	btree.insert(uni(rdg));
 
-	btree.insert(5);
-	btree.insert(8);
-	btree.insert(3);
-	btree.insert(12);
-	btree.insert(9);
-	btree.insert(15);
+	btree.insert(35);
+	btree.insert(10);
+	btree.insert(20);
+	btree.insert(40);
+	btree.insert(51);
 
 	btree.inOrder(); //display inOrder traversal
 	std::cout << std::endl;
@@ -294,6 +318,9 @@ int main()
 
 	std::cout << btree.size() << std::endl;
 	std::cout << btree.maxDepth() << std::endl;
+
+	btree.bfs();
+	std::cout << std::endl;
 
 
 }
