@@ -27,6 +27,9 @@ class BinTree
 	size_t size(TreeNode<T> *node);
 	size_t maxDepth(TreeNode<T> *node);
 
+	void printPaths(TreeNode<T> *node);
+	void printPathsRecursion(TreeNode<T> *node, int path[], int pathLength);
+
 	void inOrder(TreeNode<T> *node);
 	void preOrder(TreeNode<T> *node);
 	void postOrder(TreeNode<T> *node);
@@ -42,6 +45,7 @@ public:
 	size_t maxDepth();
 	T minValue() const;
 	T maxValue() const;
+	void printPaths();
 
 
 
@@ -257,38 +261,41 @@ void BinTree<T>::bfs()
 	}
 }
 
-// template <typename T>
-// void BinTree<T>::deletionNode(TreeNode<T> *&node)
-// {
-// 	TreeNode<T> *tmpNode = nullptr;
+template <typename T>
+void BinTree<T>::printPaths()
+{
+	printPaths(root_);
+}
 
-// 	if (node == nullptr)
-// 		std::cout << "Empty node" << std::endl;
-// 	else if (node->right_ == nullptr)
-// 	{
-// 		tmpNode = node;
-// 		node = node->left_;
-// 		delete tmpNode;
-// 	}
-// 	else if (node->left_ == nullptr)
-// 	{
-// 		tmpNode = node;
-// 		node = node->right_;
-// 		delete tmpNode;
-// 	}
-// 	else
-// 	{
-// 		tmpNode = node->right_;
-// 		while (tmpNode->left_ != nullptr)
-// 			tmpNode = tmpNode->left_;
+template <typename T>
+void BinTree<T>::printPaths(TreeNode<T> *node)
+{
+	int paths[1000];
+	printPathsRecursion(node, paths, 0);
+}
 
-// 		tmpNode->left_ = node->left_;
-// 		tmpNode = node;
-// 		node = node->right_;
-// 		delete tmpNode;
-// 	}
-// }
+template <typename T>
+void BinTree<T>::printPathsRecursion(TreeNode<T> *node, int path[], int pathLength)
+{
+	if (node == nullptr)
+		return;
 
+	path[pathLength] = node->data_;
+	pathLength++;
+
+	if (node->left_ == nullptr && node->right_ == nullptr)
+	{
+		for (int i=0; i<pathLength; ++i)
+			std::cout << path[i] << ", ";
+		std::cout << std::endl;
+
+	}
+	else
+	{
+		printPathsRecursion(node->left_, path, pathLength);
+		printPathsRecursion(node->right_, path, pathLength);
+	}
+}
 
 int main()
 {
@@ -312,15 +319,13 @@ int main()
 
 	std::cout << (btree.find(6) ? "Find" : "Not find") << std::endl;
 
-	// btree.remove(6);
-	// btree.inOrder(); //display inOrder traversal
-	// std::cout << std::endl;
-
 	std::cout << btree.size() << std::endl;
 	std::cout << btree.maxDepth() << std::endl;
 
 	btree.bfs();
 	std::cout << std::endl;
 
+	btree.printPaths();
+	std::cout << std::endl;
 
 }
