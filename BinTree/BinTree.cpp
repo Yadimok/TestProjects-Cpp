@@ -10,7 +10,6 @@ class BinTree
 	{
 		TreeNode(U data) : data_(data), left_(nullptr), right_(nullptr)
 		{
-
 		}
 
 		U			data_;
@@ -264,6 +263,7 @@ void BinTree<T>::bfs()
 template <typename T>
 void BinTree<T>::printPaths()
 {
+	std::cout << "Print paths:" << std::endl;
 	printPaths(root_);
 }
 
@@ -301,18 +301,18 @@ int main()
 {
 	BinTree<int> btree;
 
-	// std::random_device rd;
-	// std::mt19937 rdg(rd());
-	// std::uniform_int_distribution<int> uni(1, 16);
+	std::random_device rd;
+	std::mt19937 rdg(rd());
+	std::uniform_int_distribution<int> uni(1, 16);
 
-	// for (int i=0; i<10; ++i)
-	// 	btree.insert(uni(rdg));
+	for (int i=0; i<10; ++i)
+		btree.insert(uni(rdg));
 
-	btree.insert(35);
-	btree.insert(10);
-	btree.insert(20);
-	btree.insert(40);
-	btree.insert(51);
+	// btree.insert(35);
+	// btree.insert(10);
+	// btree.insert(20);
+	// btree.insert(40);
+	// btree.insert(51);
 
 	btree.inOrder(); //display inOrder traversal
 	std::cout << std::endl;
