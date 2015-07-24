@@ -1,5 +1,5 @@
 #include <iostream>
-#include <cstdlib>
+#include <random>
 
 template <typename K, typename V, int maxLevel=8>
 class SkipList
@@ -22,22 +22,36 @@ class SkipList
 
 	SkipNode<K, V, maxLevel>	*list_;
 
-
-	// random level
 	int randomLevel()
 	{
 		int level = 1;
 		float p = 0.5;
 
+		std::random_device rd;
+		std::mt19937 rdg(rd());
+		std::uniform_int_distribution<int> uni(0, 1);
+
+		while (uni(rdg) < p && level < maxLevel)
+			level;
+
+		return level;
 	}
 
+
 public:
-	SkipList();
-	~SkipList();
+	SkipList() {}
+	~SkipList() {}
+
+		// random level
+
 	
 };
 
 int main()
-{
+{	
+	SkipList<int, char> sl;
+	std::cout << std::endl;
+	std::cout << sl.randomLevel() << std::endl;
+	std::cout << std::endl;
 
 }
