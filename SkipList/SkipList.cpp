@@ -1,10 +1,7 @@
 #include <iostream>
-#include <cstdlib>
-#include <cmath>
-#include <cstring>
+// #include <random>
 
 const int MAX_LEVEL = 5;
-const float P 		= 0.5f;
 
 template <typename V>
 class SkipList
@@ -17,7 +14,8 @@ class SkipList
 		SkipNode(U value, int level) : value_(value), level_(level)
 		{
 			next_ = new SkipNode<U>*[level_+1];
-			memset(next_, 0, sizeof(SkipNode<U> *) * (level_ + 1));
+			for (int i=0; i<level_+1; i++)
+				next_[i] = nullptr;
 		}
 
 		~SkipNode()
@@ -31,9 +29,21 @@ class SkipList
 		SkipNode<U>	**next_;
 	};
 
-	float frandom()
+
+
+	int randomLevel()
 	{
-		return std::rand() / static_cast<float>(RAND_MAX);
+		int level = 1;
+		double p = 0.5;
+		while ((std::rand()/static_cast<double>(RAND_MAX)) < p && level < MAX_LEVEL)
+			level++;
+		return level;
+
+		// std::random_device rd;
+		// std::mt19937 rdg(rd());
+		// std::uniform_int_distribution<int> uni(0, MAX_LEVEL);
+
+		// return uni(rdg);
 	}
 
 
@@ -48,20 +58,6 @@ public:
 	bool search(V value);
 	void display();
 	void insert(V value);
-
-	int randomLevel()
-	{
-		static bool first = true;
-		if (first) 
-    	{
-        	std::srand((unsigned)time(NULL));
-        	first = false;
-    	}
-
-    	int level = (int)(std::log(frandom()) / std::log(P));
-
-    	return (level < MAX_LEVEL) ? level : MAX_LEVEL;
-	}
 
 };
 
@@ -83,7 +79,6 @@ template <typename V>
 void SkipList<V>::insert(V value)
 {
 	SkipNode<V> *tmpNode = skiplistHeader_;
-
 	SkipNode<V> *update[MAX_LEVEL+1];
 
 	for (int level=currentLevel; level >= 0; level--)
@@ -144,9 +139,6 @@ bool SkipList<V>::search(V value)
 	return (tmpNode->value_ == value) ? true : false;
 }
 
-//
-//A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
-
 int main()
 {	
 
@@ -160,6 +152,6 @@ int main()
 
 	slist.display();
 
-	// std::cout << (slist.search(111) ? "TRUE" : "FALSE") << std::endl;
+	std::cout << (slist.search('B') ? "TRUE" : "FALSE") << std::endl;
 
 }
