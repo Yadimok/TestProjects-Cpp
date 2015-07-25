@@ -78,7 +78,6 @@ void SkipList<V>::insert(V value)
 {
 	SkipNode<V> *tmpNode = skipListRoot_;
 	SkipNode<V> *update[MAX_LEVEL+1];
-	memset(update, 0, sizeof(SkipNode<V> *) * (MAX_LEVEL + 1));
 
 	for (int level=currentLevel; level >= 0; level--)
 	{
@@ -142,7 +141,6 @@ void SkipList<V>::remove(V value)
 {
 	SkipNode<V> *tmpNode = skipListRoot_;
 	SkipNode<V> *update[MAX_LEVEL+1];
-	memset(update, 0, sizeof(SkipNode<V> *) * (MAX_LEVEL + 1));
 
 
 	for (int i=currentLevel; i >= 0; i--)
@@ -151,8 +149,6 @@ void SkipList<V>::remove(V value)
 			tmpNode = tmpNode->next_[i];
 		update[i] = tmpNode;
 	}
-
-	std::cout << "dump" << std::endl;
 
 	tmpNode = tmpNode->next_[0];
 
@@ -167,17 +163,14 @@ void SkipList<V>::remove(V value)
 
 		std::cout << "dump 2" << std::endl;
 
-		if (search(value))
-			delete tmpNode;
+		delete tmpNode;
 
 		while (currentLevel > 0 && skipListRoot_->next_[currentLevel] == nullptr)
 			currentLevel--;
-
-			std::cout << 1 << std::endl;
 	}
 	else
 	{
-		std::cout << "Value not found" << std::endl;
+		std::cout << "Nothing delete" << std::endl;
 	}
 }
 
@@ -196,14 +189,15 @@ int main()
 
 	std::cout << (slist.search('B') ? "TRUE" : "FALSE") << std::endl;
 
-	slist.remove('A');
+	if (slist.search('A'))
+		slist.remove('A');
 	slist.display();
 
-	slist.remove('B');
+	if (slist.search('B'))
+		slist.remove('B');
 	slist.display();
 
-	if (slist.search('Z'))
-		slist.remove('Z');
+	if (slist.search('X'))
+		slist.remove('X');
 	slist.display();
-
 }
