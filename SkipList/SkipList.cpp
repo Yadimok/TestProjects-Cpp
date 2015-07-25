@@ -54,6 +54,7 @@ public:
 	~SkipList();
 
 	bool search(K key);
+	void display();
 
 };
 
@@ -102,12 +103,20 @@ bool SkipList<K, V>::search(K key)
 	return (tmpNode->key_ == key) ? true : false;
 }
 
+template <typename K, typename V>
+void SkipList<K, V>::display()
+{
+	SkipList<K, V> *tmpNode = skiplistHeader_->next_[1];
+	while (tmpNode != skiplistTail_)
+	{
+		std::cout << tmpNode->key_ << '\t' << tmpNode->value_ << std::endl;
+		tmpNode = tmpNode->next_[1];
+	}
+}
+
 
 
 int main()
 {	
 	SkipList<int, char> sl;
-
-
-
 }
