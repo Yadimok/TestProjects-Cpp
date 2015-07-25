@@ -1,7 +1,6 @@
 #include <iostream>
-#include <random>
 
-const int MAX_LEVEL = 8;
+const int MAX_LEVEL = 5;
 
 template <typename K, typename V>
 class SkipList
@@ -12,7 +11,7 @@ class SkipList
 	{
 		SkipNode(T key, U value) : key_(key), value_(value)
 		{
-			for (int i=1; i<MAX_LEVEL; ++i)
+			for (int i=1; i<=MAX_LEVEL; ++i)
 				next_[i] = nullptr;
 		}
 
@@ -22,25 +21,22 @@ class SkipList
 		SkipNode<T, U>	*next_[MAX_LEVEL+1];
 	};
 
-	int randomLevel()
-	{
-		int level = 1;
-		float p = 0.5;
-
-		std::random_device rd;
-		std::mt19937 rdg(rd());
-		std::uniform_int_distribution<int> uni(0, 1);
-
-		while (uni(rdg) < p && level < MAX_LEVEL)
-			level;
-
-		return level;
-	}
-
 	SkipNode<K, V>	*skiplist_;
 	K 				minKey;
 	K 				maxKey;
 	int 			currentLevel;
+	int 			lgN;
+
+	int randomLevel()
+	{
+		int level, j, t = rand();
+    	for (level = 1, j = 2; level < MAX_LEVEL; level++, j += j)
+        	if (t > (RAND_MAX / j))
+            	break;
+    	if (level > lgN)
+        	lgN = level;
+    	return level;
+	}
 
 
 public:
@@ -52,7 +48,7 @@ public:
 template <typename K, typename V>
 SkipList<K, V>::SkipList()
 {
-
+	lgN = 0;
 }
 
 template <typename K, typename V>
@@ -67,7 +63,5 @@ int main()
 	std::cout << std::endl;
 	// std::cout << sl.randomLevel() << std::endl;
 	std::cout << std::endl;
-
-
 
 }
