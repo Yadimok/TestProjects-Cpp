@@ -1,122 +1,165 @@
 #include <iostream>
+#include <cstdlib>
+#include <cmath>
+#include <cstring>
 
 const int MAX_LEVEL = 5;
+const float P 		= 0.5f;
 
-template <typename K, typename V>
+template <typename V>
 class SkipList
 {
 
-	template <typename T, typename U>
+	template <typename U>
 	struct SkipNode
 	{
 
-		SkipNode()
+		SkipNode(U value, int level) : value_(value), level_(level)
 		{
-			for (int i=1; i<=MAX_LEVEL; ++i)
-				next_[i] = nullptr;	
+			next_ = new SkipNode<U>*[level_+1];
+			memset(next_, 0, sizeof(SkipNode<U> *) * (level_ + 1));
 		}
 
-		SkipNode(T key, U value) : key_(key), value_(value)
+		~SkipNode()
 		{
-			for (int i=1; i<=MAX_LEVEL; ++i)
-				next_[i] = nullptr;
+			delete [] next_;
 		}
 
-		T	key_;
-		U	value_;
+		U			value_;
+		int 		level_;
 
-		SkipNode<T, U>	*next_[MAX_LEVEL+1];
+		SkipNode<U>	**next_;
 	};
 
-	SkipNode<K, V>	*skiplistHeader_;
-	SkipNode<K, V> 	*skiplistTail_;
-
-	K 				minKey;
-	K 				maxKey;
-	int 			currentLevel;
-	int 			lgN;
-	int 			maxLevel;
-
-	int randomLevel()
+	float frandom()
 	{
-		int level, j, t = rand();
-    	for (level = 1, j = 2; level < MAX_LEVEL; level++, j += j)
-        	if (t > (RAND_MAX / j))
-            	break;
-    	if (level > lgN)
-        	lgN = level;
-    	return level;
+		return std::rand() / static_cast<float>(RAND_MAX);
 	}
+
+
+	SkipNode<V>		*skiplistHeader_;
+	int 			currentLevel;
 
 
 public:
 	SkipList();
 	~SkipList();
 
-	bool search(K key);
+	bool search(V value);
 	void display();
+	void insert(V value);
+
+	int randomLevel()
+	{
+		static bool first = true;
+		if (first) 
+    	{
+        	std::srand((unsigned)time(NULL));
+        	first = false;
+    	}
+
+    	int level = (int)(std::log(frandom()) / std::log(P));
+
+    	return (level < MAX_LEVEL) ? level : MAX_LEVEL;
+	}
 
 };
 
-template <typename K, typename V>
-SkipList<K, V>::SkipList()
+template <typename V>
+SkipList<V>::SkipList()
 {
-	lgN 			= 0;
-	currentLevel 	= 1;
-	maxLevel 		= MAX_LEVEL;
-	
-	skiplistHeader_		= new SkipNode<K, V>();
-	skiplistTail_		= new SkipNode<K, V>();
-
-	for (int i=1; i <= MAX_LEVEL; ++i)
-		skiplistHeader_->next_[i] = skiplistTail_;
-
+	skiplistHeader_		= new SkipNode<V>(V(), MAX_LEVEL);
+	currentLevel 		= 0;
 }
 
-template <typename K, typename V>
-SkipList<K, V>::~SkipList()
+template <typename V>
+SkipList<V>::~SkipList()
 {
-	SkipNode<K, V> *tmpNode = skiplistHeader_->next_[1];
+	delete skiplistHeader_;
+	skiplistHeader_ = nullptr;
+}
 
-	while (tmpNode != skiplistTail_)
+template <typename V>
+void SkipList<V>::insert(V value)
+{
+	SkipNode<V> *tmpNode = skiplistHeader_;
+
+	SkipNode<V> *update[MAX_LEVEL+1];
+
+	for (int level=currentLevel; level >= 0; level--)
 	{
-		SkipNode<K, V> *node = tmpNode;
-		tmpNode = tmpNode->next_[1];
-		delete node;
+		while (tmpNode->next_[level] != nullptr && tmpNode->next_[level]->value_ < value)
+			tmpNode = tmpNode->next_[level];
+		update[level] = tmpNode;
 	}
 
-	delete skiplistHeader_;
-	delete skiplistTail_;
+	tmpNode = tmpNode->next_[0];
+
+
+	if (tmpNode == nullptr || tmpNode->value_ != value)
+	{
+		int newLevel = randomLevel();
+		std::cout << newLevel << std::endl;
+
+		if (newLevel > currentLevel) {
+			for (int level = currentLevel+1; level <= newLevel; level++)
+				update[level] = skiplistHeader_;
+			currentLevel = newLevel;	
+		}
+
+		tmpNode = new SkipNode<V>(value, currentLevel);
+		for (int i = 0; i <= newLevel; i++)
+		{
+			tmpNode->next_[i] = update[i]->next_[i];
+			update[i]->next_[i] = tmpNode;
+		}
+	}
 }
 
-template <typename K, typename V>
-bool SkipList<K, V>::search(K key)
+template <typename V>
+void SkipList<V>::display()
 {
-	SkipNode<K, V> *tmpNode = skiplistHeader_;
-	for (int i=currentLevel; i>=1; i--)
+	const SkipNode<V> *tmpNode = skiplistHeader_->next_[0];
+
+	std::cout << ":-> ";
+	while (tmpNode != nullptr)
 	{
-		while (tmpNode->next_[i]->key_ < key)
+		std::cout << tmpNode->value_ <<", ";
+		tmpNode = tmpNode->next_[0];
+	}
+	std::cout << std::endl;
+}
+
+template <typename V>
+bool SkipList<V>::search(V value)
+{
+	SkipNode<V> *tmpNode = skiplistHeader_;
+	for (int i=currentLevel; i>=0; i--)
+	{
+		while (tmpNode->next_[i]->value_ < value)
 			tmpNode = tmpNode->next_[i];
 	}
 
-	tmpNode = tmpNode->next_[1];
-	return (tmpNode->key_ == key) ? true : false;
+	tmpNode = tmpNode->next_[0];
+	return (tmpNode->value_ == value) ? true : false;
 }
 
-template <typename K, typename V>
-void SkipList<K, V>::display()
-{
-	SkipList<K, V> *tmpNode = skiplistHeader_->next_[1];
-	while (tmpNode != skiplistTail_)
-	{
-		std::cout << tmpNode->key_ << '\t' << tmpNode->value_ << std::endl;
-		tmpNode = tmpNode->next_[1];
-	}
-}
-
-
+//
+//A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
 
 int main()
 {	
-	SkipList<int, char> sl;
+
+	SkipList<char> slist;
+
+	const int N = 17;
+	char c_[] = {'A', 'S', 'E', 'A', 'R', 'C', 'H', 'I', 'N', 'G', 'E', 'X', 'A', 'M', 'P', 'L', 'E'};
+
+	for (int i=0; i<N; ++i)
+		slist.insert(c_[i]);
+
+	slist.display();
+
+	// std::cout << (slist.search(111) ? "TRUE" : "FALSE") << std::endl;
+
 }
