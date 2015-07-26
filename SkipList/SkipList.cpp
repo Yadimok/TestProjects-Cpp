@@ -161,16 +161,10 @@ void SkipList<V>::remove(V value)
 			update[i]->next_[i] = tmpNode->next_[i];
 		}
 
-		std::cout << "dump 2" << std::endl;
-
 		delete tmpNode;
 
 		while (currentLevel > 0 && skipListRoot_->next_[currentLevel] == nullptr)
 			currentLevel--;
-	}
-	else
-	{
-		std::cout << "Nothing delete" << std::endl;
 	}
 }
 
