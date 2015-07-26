@@ -174,7 +174,7 @@ int main()
 	SkipList<char> slist;
 
 	const int N = 17;
-	char c_[] = {'A', 'S', 'E', 'A', 'R', 'C', 'H', 'I', 'N', 'G', 'E', 'X', 'A', 'M', 'P', 'L', 'E'};
+	char c_[N] = {'A', 'S', 'E', 'A', 'R', 'C', 'H', 'I', 'N', 'G', 'E', 'X', 'A', 'M', 'P', 'L', 'E'};
 
 	for (int i=0; i<N; ++i)
 		slist.insert(c_[i]);
