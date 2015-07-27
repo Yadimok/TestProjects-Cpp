@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstring>
 // #include <random>
 
 const int MAX_LEVEL = 5;
@@ -14,8 +13,7 @@ class SkipList
 
 		SkipNode(U value, int level) : value_(value), level_(level)
 		{
-			next_ = new SkipNode<U>*[level_+1];
-			memset(next_, 0, sizeof(SkipNode<U> *) * (level_ + 1));
+			next_ = new SkipNode<U>*[level_+1]();
 		}
 
 		~SkipNode()
