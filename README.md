@@ -6,3 +6,4 @@
 4. Hash table - HashTable.cpp (Separate chaining with linked list)
 5. Binary Search Tree  - BinTree.cpp
 6. Skip list - SkipList.cpp
+7. AVLTree - AVLTree.cpp
