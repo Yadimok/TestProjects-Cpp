@@ -358,13 +358,11 @@ int main()
 	avlTree.printPaths();
 	std::cout << std::endl;
 
-
 	avlTree.remove('X');
 	avlTree.display();
 	std::cout << std::endl;
 	avlTree.printPaths();
 	std::cout << std::endl;
-
 
 	avlTree.remove('M');
 	avlTree.display();
@@ -372,12 +370,10 @@ int main()
 	avlTree.printPaths();
 	std::cout << std::endl;
 
-
 	avlTree.remove('E');
 	avlTree.display();
 	std::cout << std::endl;
 	avlTree.printPaths();
 	std::cout << std::endl;
-
 
 }
