@@ -35,6 +35,9 @@ class AVLTree
 	void printPaths(AVLNode<T> *node);
 	void printPathsRecursion(AVLNode<T> *node, T path[], int pathLength);
 
+	void remove(AVLNode<T> *&node, T value);
+	AVLNode<T> *minValueNode(AVLNode<T> *node);
+
 public:
 
 	AVLTree();
@@ -44,6 +47,7 @@ public:
 	void insert(T value);
 	bool find(T value) const; 
 	void printPaths();
+	void remove(T value);
 
 };
 
@@ -223,8 +227,7 @@ void AVLTree<T>::printPathsRecursion(AVLNode<T> *node, T path[], int pathLength)
 	if (node == nullptr)
 		return;
 
-	path[pathLength] = node->value_;
-	pathLength++;
+	path[pathLength++] = node->value_;
 
 	if (node->left_ == nullptr && node->right_ == nullptr)
 	{
@@ -237,6 +240,95 @@ void AVLTree<T>::printPathsRecursion(AVLNode<T> *node, T path[], int pathLength)
 		printPathsRecursion(node->left_, path, pathLength);
 		printPathsRecursion(node->right_, path, pathLength);
 	}
+}
+
+template <typename T>
+void AVLTree<T>::remove(T value)
+{
+	remove(root_, value);
+}
+
+template <typename T>
+AVLTree<T>::AVLNode<T> *AVLTree<T>::minValueNode(AVLNode<T> *node)
+{
+	AVLNode<T> *cur = root_;
+	while (cur->left_ != nullptr)
+		cur = cur->left_;
+	return cur;
+}
+
+template <typename T>
+void AVLTree<T>::remove(AVLNode<T> *&node, T value)
+{
+	if (node == nullptr)
+		return;
+
+	if (value < node->value_)
+	{
+		remove(node->left_, value);
+	}
+	else if (value > node->value_)
+	{
+		remove(node->right_, value);
+	}
+	else
+	{
+		if ((node->left_ == nullptr) || (node->right_ == nullptr))
+		{
+			AVLNode<T> *tmpNode = node->left_ ? node->left_ : node->right_;
+
+			if (tmpNode == nullptr)
+			{
+				tmpNode = node;
+				node = nullptr;
+			}
+			else
+			{
+				*node = *tmpNode;
+			}
+			delete tmpNode;
+		}
+		else
+		{
+			AVLNode<T> *tmpNode = minValueNode(node->right_);
+			node->value_ = tmpNode->value_;
+			remove(node->right_, tmpNode->value_);
+		}
+	}
+
+	if (node == nullptr)
+		return;
+
+	node->height_ = std::max(height(node->left_), height(node->right_)) + 1;
+
+	int balance = getBalance(node);
+
+	if (balance > 1 && getBalance(node->left_) >= 0)
+	{
+		rotateRight(node);
+		return;
+	}
+
+	if (balance < -1 && getBalance(node->right_) <= 0)
+	{
+		rotateLeft(node);
+		return;
+	}
+
+	if (balance > 1 && getBalance(node->left_) < 0)
+	{
+		rotateLeft(node->left_);
+		rotateRight(node);
+		return;
+	}
+
+	if (balance < -1 && getBalance(node->right_) > 0)
+	{
+		rotateRight(node->right_);
+		rotateLeft(node);
+		return;
+	}
+
 }
 
 
@@ -259,4 +351,33 @@ int main()
 
 	avlTree.printPaths();
 	std::cout << std::endl;
+
+	avlTree.remove('A');
+	avlTree.display();
+	std::cout << std::endl;
+	avlTree.printPaths();
+	std::cout << std::endl;
+
+
+	avlTree.remove('X');
+	avlTree.display();
+	std::cout << std::endl;
+	avlTree.printPaths();
+	std::cout << std::endl;
+
+
+	avlTree.remove('M');
+	avlTree.display();
+	std::cout << std::endl;
+	avlTree.printPaths();
+	std::cout << std::endl;
+
+
+	avlTree.remove('E');
+	avlTree.display();
+	std::cout << std::endl;
+	avlTree.printPaths();
+	std::cout << std::endl;
+
+
 }
