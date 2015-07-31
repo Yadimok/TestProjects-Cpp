@@ -27,7 +27,7 @@ class BinTree
 	size_t maxDepth(TreeNode<T> *node);
 
 	void printPaths(TreeNode<T> *node);
-	void printPathsRecursion(TreeNode<T> *node, int path[], int pathLength);
+	void printPathsRecursion(TreeNode<T> *node, T path[], int pathLength);
 
 	void inOrder(TreeNode<T> *node);
 	void preOrder(TreeNode<T> *node);
@@ -295,12 +295,12 @@ void BinTree<T>::printPaths()
 template <typename T>
 void BinTree<T>::printPaths(TreeNode<T> *node)
 {
-	int paths[1000];
+	T paths[1000];
 	printPathsRecursion(node, paths, 0);
 }
 
 template <typename T>
-void BinTree<T>::printPathsRecursion(TreeNode<T> *node, int path[], int pathLength)
+void BinTree<T>::printPathsRecursion(TreeNode<T> *node, T path[], int pathLength)
 {
 	if (node == nullptr)
 		return;
