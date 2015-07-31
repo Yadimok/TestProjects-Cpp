@@ -32,6 +32,9 @@ class AVLTree
 	void balance(AVLNode<T> *&node, T &value);
 	void insert(AVLNode<T> *&node, T value);
 
+	void printPaths(AVLNode<T> *node);
+	void printPathsRecursion(AVLNode<T> *node, T path[], int pathLength);
+
 public:
 
 	AVLTree();
@@ -39,6 +42,8 @@ public:
 
 	void display();
 	void insert(T value);
+	bool find(T value) const; 
+	void printPaths();
 
 };
 
@@ -181,6 +186,59 @@ void AVLTree<T>::insert(AVLNode<T> *&node, T value)
 	balance(node, value);
 }
 
+template <typename T>
+bool AVLTree<T>::find(T value) const
+{
+	AVLNode<T> *cur = root_;
+
+	while (cur != nullptr)
+	{
+		if (cur->value_ == value)
+			return true;
+		else if (cur->value_ > value)
+			cur = cur->left_;
+		else
+			cur = cur->right_;
+	}
+	return false;
+}
+
+template <typename T>
+void AVLTree<T>::printPaths()
+{
+	std::cout << "Print paths:" << std::endl;
+	printPaths(root_);
+}
+
+template <typename  T>
+void AVLTree<T>::printPaths(AVLNode<T> *node)
+{
+	T paths[1000];
+	printPathsRecursion(node, paths, 0);
+}
+
+template <typename T>
+void AVLTree<T>::printPathsRecursion(AVLNode<T> *node, T path[], int pathLength)
+{
+	if (node == nullptr)
+		return;
+
+	path[pathLength] = node->value_;
+	pathLength++;
+
+	if (node->left_ == nullptr && node->right_ == nullptr)
+	{
+		for (int i=0; i<pathLength; ++i)
+			std::cout << path[i] << ", ";
+		std::cout << std::endl;
+	}
+	else
+	{
+		printPathsRecursion(node->left_, path, pathLength);
+		printPathsRecursion(node->right_, path, pathLength);
+	}
+}
+
 
 int main()
 {
@@ -196,4 +254,9 @@ int main()
 	avlTree.display();
 	std::cout << std::endl;
 
+	std::cout << (avlTree.find('Y') ? "Find" : "Not find") << std::endl;
+	std::cout << (avlTree.find('X') ? "Find" : "Not find") << std::endl;
+
+	avlTree.printPaths();
+	std::cout << std::endl;
 }
