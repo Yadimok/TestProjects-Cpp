@@ -8,8 +8,14 @@
 6. Skip list - SkipList.cpp
 7. AVLTree - AVLTree.cpp
 
+<<<<<<< HEAD
 #Sockets
 test/tcpechoserver.c - simple TCP echo server
 test/tcpechoclient.c - simple TCP echo client
 test/sender.c 		 - simple UDP sender
 test/receiver.c 	 - simple UDP receiver
+=======
+#dir Sockets
+1. test/tcpechoserver.c - simple TCP echo server
+2. test/tcpechoclient.c - simple TCP echo client
+>>>>>>> dc0ff268283230e59b7a82bd50f89b08a2bdb930
