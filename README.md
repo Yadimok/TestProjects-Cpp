@@ -9,7 +9,7 @@
 7. AVLTree - AVLTree.cpp
 
 #Sockets
-test/tcpechoserver.c - simple TCP echo server
-test/tcpechoclient.c - simple TCP echo client
-test/sender.c 		 - simple UDP sender
-test/receiver.c 	 - simple UDP receiver
+1. test/tcpechoserver.c - simple TCP echo server
+2. test/tcpechoclient.c - simple TCP echo client
+3. test/sender.c 		 - simple UDP sender
+4. test/receiver.c 	 - simple UDP receiver
