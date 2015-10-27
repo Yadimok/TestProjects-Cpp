@@ -9,5 +9,5 @@
 7. AVLTree - AVLTree.cpp
 
 #dir Sockets
-test/tcpechoserver.c - simple TCP echo server
-test/tcpechoclient.c - simple TCP echo client
+1. test/tcpechoserver.c - simple TCP echo server
+2. test/tcpechoclient.c - simple TCP echo client
