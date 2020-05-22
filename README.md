@@ -18,3 +18,7 @@
 7. tcp/win_tcp_client.cpp - WinXP\Win7
 8. tcp/send_client.c - send file
 9. tcp/receive_server.c - receive file
+10. tcp/test_asio_client.cpp - send message to server with asio.hpp
+11. tcp/test_asio_server.cpp - receive message from client with asio.hpp
+12. tcp/test_sync_client.cpp - send file to server, synchronous tcp client
+13. tcp/test_sync_server.cpp - receive file from client, synchronous tcp server
