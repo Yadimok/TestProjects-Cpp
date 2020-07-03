@@ -1,5 +1,6 @@
 #TestProjects-Cpp
 
+<b>#Data structures:<b>
 1. Dynamic stack - DynStack.cpp
 2. Dynamic queue - DynQueue.cpp
 3. Linked list - LinkedList.cpp
@@ -8,7 +9,7 @@
 6. Skip list - SkipList.cpp
 7. AVLTree - AVLTree.cpp
 
-#Sockets
+<b>#Sockets:</b>
 1. Sockets/test/tcpechoserver.c - simple TCP echo server
 2. Sockets/test/tcpechoclient.c - simple TCP echo client
 3. Sockets/test/sender.c 		 - simple UDP sender
