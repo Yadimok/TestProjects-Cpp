@@ -26,3 +26,6 @@
 14. `Sockets/test/common.h`, `Sockets/test/interval_timer.c` - interval timer
 15. `Sockets/test/test_tcp_client_interval_timer.c` - tcp client with interval timer
 16. `Sockets/test/test_tcp_server_poll.c` - tcp server with using poll
+
+<b>#Other:</b>
+1. Serial - serial port
